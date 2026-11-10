@@ -1,66 +1,210 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Peminjaman Buku Perpustakaan Sekolah
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Baca Dokumentasi Utama Dulu
 
-## About Laravel
+**[Buka atau unduh DalilulFalihin_Dokumentasi.docx](./DalilulFalihin_Dokumentasi.docx)**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> [!IMPORTANT]
+> Mulai dari **`DalilulFalihin_Dokumentasi.docx`**. Dokumen ini berisi ERD, penjelasan program, dokumentasi halaman admin dan siswa, catatan debugging, serta evaluasi proyek.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Kalau GitHub tidak menampilkan pratinjaunya, unduh file lalu buka dengan Microsoft Word atau LibreOffice Writer.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Setelah membaca dokumen tersebut, gunakan README ini untuk mengenal fitur dan mencoba aplikasinya di komputer sendiri. Penjelasan di bawah mengikuti kode yang ada di repositori.
 
-## Learning Laravel
+### Mau Langsung ke Bagian Tertentu?
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+[Tentang proyek](#tentang-proyek) · [Teknologi](#teknologi) · [Fitur](#fitur-dan-hak-akses) · [Alur peminjaman](#cara-meminjam-dan-mengembalikan-buku) · [Instalasi](#menjalankan-di-komputer-sendiri) · [Struktur kode](#mengenal-struktur-kode-dan-data) · [Catatan pengembangan](#catatan-pengembangan)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Tentang Proyek
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Aplikasi ini dibuat untuk membantu pencatatan peminjaman buku di perpustakaan sekolah. Admin bisa mengelola koleksi buku dan data pengguna, sementara siswa bisa melihat koleksi, meminjam, lalu mengembalikan buku melalui aplikasi.
 
-## Laravel Sponsors
+Setiap peminjaman menyimpan tanggal pinjam, batas pengembalian, dan status buku. Saat buku dikembalikan terlambat, aplikasi menghitung dendanya.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Penyusun:** Dalilul Falihin.
+- **Kelas:** XII RPL 3 (Desktop).
+- **Paket UKK:** Paket 3, Peminjaman Buku.
 
-### Premium Partners
+## Teknologi
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+| Komponen | Teknologi |
+| --- | --- |
+| Bahasa pemrograman | PHP `^8.2` |
+| Framework | Laravel `^12.0` |
+| Panel aplikasi | Filament `4.0` |
+| Database bawaan | SQLite |
+| Aset frontend | Vite `^6.0.11` dan Tailwind CSS `^4.0.0` |
+| Pengujian | PHPUnit `^11.5.3` |
 
-## Contributing
+Rincian versi dan dependensi bisa dilihat di [`composer.json`](./composer.json) dan [`package.json`](./package.json).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Fitur dan Hak Akses
 
-## Code of Conduct
+Admin dan siswa masuk lewat halaman yang sama, yaitu `/admin`. Menu dan tindakan yang tersedia mengikuti peran akun: `admin` atau `siswa`. Akun yang baru didaftarkan otomatis mendapat peran siswa.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Fitur | Admin | Siswa |
+| --- | --- | --- |
+| Login dan dashboard | Ya | Ya |
+| Melihat dan mencari buku berdasarkan judul, penulis, atau penerbit | Ya | Ya |
+| Menambah, mengubah, dan menghapus buku | Ya | Tidak |
+| Mengelola pengguna, kelas, dan peran | Ya | Tidak |
+| Meminjam lewat tombol `pinjam` di daftar buku | Tidak | Ya |
+| Melihat daftar peminjaman | Semua peminjaman | Hanya peminjaman sendiri |
+| Mengembalikan buku berstatus `dipinjam` | Ya | Hanya peminjaman sendiri |
+| Menambah, mengedit, atau menghapus transaksi secara manual | Tidak | Tidak |
 
-## Security Vulnerabilities
+Setiap buku memiliki judul, penulis, penerbit, tahun terbit, dan stok. Di dashboard, kamu bisa melihat jumlah data buku, transaksi berstatus `dipinjam`, dan akun siswa.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+> [!NOTE]
+> **Total Peminjam** menghitung transaksi yang masih aktif, bukan jumlah siswa yang berbeda. **Total Buku** menghitung data buku, bukan jumlah seluruh eksemplar dalam stok.
 
-## License
+## Cara Meminjam dan Mengembalikan Buku
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Login sebagai siswa, buka daftar buku, lalu klik **pinjam** dan konfirmasi pilihanmu. Tombol ini tidak bisa digunakan kalau stok buku habis.
+2. Aplikasi mencatat tanggal pinjam hari ini dan batas pengembalian **tujuh hari kemudian**. Status menjadi `dipinjam`, lalu stok berkurang satu.
+3. Saat ingin mengembalikan buku, buka daftar peminjaman, klik **Kembalikan Buku**, lalu konfirmasi.
+4. Aplikasi mencatat tanggal kembali, mengubah status menjadi `dikembalikan`, menghitung denda jika terlambat, dan menambah stok satu.
+
+> [!NOTE]
+> Denda dihitung **saat buku dikembalikan**, sebesar **Rp1.000 per hari keterlambatan** dari tanggal jatuh tempo (`due_date`). Pengembalian sebelum atau tepat pada tanggal tersebut tidak dikenai denda. Aplikasi belum menyediakan fitur pembayaran denda.
+
+## Menjalankan di Komputer Sendiri
+
+### Yang Perlu Disiapkan
+
+- PHP 8.2 atau lebih baru yang kompatibel dengan dependensi Composer, beserta ekstensi Laravel/Filament, termasuk `intl`, `mbstring`, PDO, dan `pdo_sqlite` untuk SQLite.
+- Composer.
+- Node.js yang kompatibel dengan Vite 6, disarankan Node.js 22 LTS, beserta npm.
+
+### Instalasi
+
+Unduh atau clone repositori ini, lalu buka terminal di folder proyek. Ikuti langkah berikut secara berurutan.
+
+1. Siapkan konfigurasi lokal dan dependensi:
+
+   ```bash
+   cp .env.example .env
+   composer install
+   npm install
+   php artisan key:generate
+   ```
+
+   > [!WARNING]
+   > Jika file `.env` sudah ada, lewati perintah `cp .env.example .env` agar konfigurasi yang kamu gunakan tidak tertimpa.
+
+2. Buka `.env`, lalu sesuaikan nama aplikasi dan URL. Contoh ini memakai SQLite sesuai konfigurasi bawaan proyek:
+
+   ```dotenv
+   APP_NAME="Perpustakaan Sekolah"
+   APP_URL=http://127.0.0.1:8000
+   DB_CONNECTION=sqlite
+   ```
+
+3. Buat file SQLite jika belum ada, lalu jalankan migrasi:
+
+   ```bash
+   php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
+   php artisan migrate
+   ```
+
+   Migrasi juga menyiapkan tabel sesi, cache, dan antrean yang digunakan dalam `.env.example`. Untuk saat ini, jalankan tanpa `--seed`. Alasannya ada di bagian [catatan pengembangan](#catatan-pengembangan).
+
+4. Buat akun admin:
+
+   ```bash
+   php artisan make:filament-user
+   ```
+
+   Isi nama, email, dan kata sandi saat diminta. Akun yang dibuat masih mendapat peran bawaan `siswa`, jadi perannya perlu diubah menjadi `admin`. Buka Tinker:
+
+   ```bash
+   php artisan tinker
+   ```
+
+   Jalankan kode berikut. Ganti `admin@example.test` dengan email akun yang baru dibuat:
+
+   ```php
+   App\Models\User::where('email', 'admin@example.test')->firstOrFail()->update(['role' => 'admin']);
+   ```
+
+   Ketik `exit` untuk keluar dari Tinker.
+
+5. Siapkan aset tampilan, lalu jalankan server lokal:
+
+   ```bash
+   npm run build
+   php artisan serve
+   ```
+
+   Buka [halaman login](http://127.0.0.1:8000/admin) untuk masuk. Siswa bisa membuat akun lewat [halaman registrasi](http://127.0.0.1:8000/admin/register).
+
+   > [!TIP]
+   > Gunakan alamat `/admin` untuk membuka aplikasi perpustakaan. Halaman utama `/` masih menampilkan halaman sambutan Laravel.
+
+### Coba Alur Pertamanya
+
+1. Login sebagai admin, buka menu **Books**, lalu tambahkan buku dengan stok lebih dari nol.
+2. Buat akun siswa lewat halaman registrasi atau menu **Users** sebagai admin. Admin juga bisa mengisi kelas siswa melalui menu tersebut.
+3. Login sebagai siswa, buka **Books**, lalu pilih **pinjam** pada buku yang tersedia.
+4. Buka **Loans** untuk melihat transaksi dan mengembalikan buku.
+
+### Perintah yang Bisa Digunakan
+
+| Perintah | Fungsi |
+| --- | --- |
+| `php artisan serve` | Menjalankan server aplikasi lokal |
+| `npm run dev` | Menjalankan Vite saat mengembangkan aset, di terminal terpisah dari server PHP |
+| `npm run build` | Membangun aset untuk digunakan tanpa server Vite |
+| `php artisan test` | Menjalankan pengujian yang tersedia |
+| `php artisan optimize:clear` | Membersihkan cache konfigurasi dan aplikasi setelah perubahan konfigurasi |
+
+## Mengenal Struktur Kode dan Data
+
+Kalau ingin mempelajari atau mengubah aplikasinya, mulai dari folder berikut.
+
+| Lokasi | Isi |
+| --- | --- |
+| [`app/Models`](./app/Models) | Model `User`, `Book`, dan `Loan` |
+| [`app/Filament/Resources/Books`](./app/Filament/Resources/Books) | Form buku, tabel, hak akses, dan aksi peminjaman |
+| [`app/Filament/Resources/Loans`](./app/Filament/Resources/Loans) | Pembatasan riwayat siswa, tabel peminjaman, pengembalian, dan denda |
+| [`app/Filament/Resources/Users`](./app/Filament/Resources/Users) | Pengelolaan pengguna oleh admin |
+| [`app/Filament/Widgets/StatsOverview.php`](./app/Filament/Widgets/StatsOverview.php) | Statistik dashboard |
+| [`app/Providers/Filament/AdminPanelProvider.php`](./app/Providers/Filament/AdminPanelProvider.php) | Konfigurasi panel `/admin`, login, dan registrasi |
+| [`database/migrations`](./database/migrations) | Struktur tabel aplikasi |
+| [`database/seeders/DatabaseSeeder.php`](./database/seeders/DatabaseSeeder.php) | Data contoh pengguna dan buku |
+
+Tabel utama:
+
+- **`users`**: nama, email unik, kata sandi, peran, dan kelas.
+- **`books`**: judul (`title`), penulis (`author`), penerbit (`publisher`), tahun (`year`), dan stok (`stock`).
+- **`loans`**: referensi pengguna (`user_id`) dan buku (`book_id`), tanggal pinjam (`loan_date`), jatuh tempo (`due_date`), tanggal kembali (`returned_at`), status, dan denda.
+
+Setiap transaksi terhubung ke satu pengguna dan satu buku. Satu pengguna bisa memiliki banyak transaksi, begitu juga satu buku.
+
+> [!WARNING]
+> Relasi database menggunakan `cascadeOnDelete`. Menghapus pengguna atau buku juga menghapus riwayat peminjaman yang terkait. Periksa data terlebih dahulu sebelum menghapusnya.
+
+## Catatan Pengembangan
+
+Ada beberapa hal dalam kode yang perlu diperhatikan saat mencoba atau melanjutkan proyek ini. Klik bagian berikut untuk membaca rinciannya.
+
+<details>
+<summary><strong>Batas pinjaman dan data contoh</strong></summary>
+
+- **Batas pinjaman belum sesuai pesan aplikasi.** Pesannya menyebut maksimal tiga buku, tetapi kondisi di `BooksTable.php` masih `$total_buku_dipinjam > 3`. Siswa yang sudah memiliki tiga pinjaman aktif masih bisa meminjam buku keempat.
+- **Seeder perlu diperbaiki sebelum digunakan.** Di `DatabaseSeeder.php`, data penulis memakai kunci `Author`, sedangkan nama kolom dan atribut model adalah `author`. Akibatnya, penyimpanan buku contoh bisa gagal karena penulis tidak terisi. Itu sebabnya panduan di atas memakai migrasi tanpa seeder dan membuat akun secara manual.
+
+</details>
+
+<details>
+<summary><strong>Stok, pengujian, dan penggunaan di server</strong></summary>
+
+- **Perubahan stok saat akses bersamaan perlu diuji.** Pembuatan transaksi dan perubahan stok belum dibungkus dalam transaksi database atau penguncian baris. Peminjaman dan pengembalian yang dilakukan bersamaan perlu diperiksa sebelum aplikasi digunakan bersama.
+- **Pengujian masih berupa contoh bawaan.** Folder `tests/` belum berisi pengujian khusus untuk hak akses, peminjaman, stok, dan perhitungan denda.
+- **Panduan ini untuk penggunaan lokal.** Model `User` belum menerapkan kontrak `FilamentUser` dan `canAccessPanel()` untuk akses panel di luar lingkungan lokal. Siapkan dan uji pengaturan akses produksi sebelum memublikasikan aplikasi.
+
+</details>
+
+---
+
+Butuh ERD dan dokumentasi tampilan? Buka kembali **[Dokumentasi Utama (.docx)](./DalilulFalihin_Dokumentasi.docx)**.
